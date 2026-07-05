@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>வட்டி கணக்கீட்டாளர்</title>
+    <title>வட்டி கணக்கீட்டாளர் - Interest Calculator</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,7 +13,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #f4f7f6 0%, #e9eff1 100%);
+            background-color: #f7f9fa;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -24,40 +24,35 @@
         .calculator-card {
             background: #ffffff;
             width: 100%;
-            max-width: 480px;
-            border-radius: 24px;
-            box-shadow: 0 12px 40px rgba(179, 29, 29, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
-            padding: 32px;
-            border: 1px solid rgba(234, 234, 234, 0.8);
+            max-width: 450px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 28px;
+            border: 1px solid #eaeaea;
         }
 
         .title {
-            background: linear-gradient(135deg, #b31d1d 0%, #d63030 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #b31d1d;
             text-align: center;
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 28px;
-            letter-spacing: -0.5px;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 24px;
         }
 
         .section-label {
             display: block;
-            font-size: 13px;
-            font-weight: 700;
-            color: #555c66;
-            margin-bottom: 10px;
-            letter-spacing: 0.5px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333333;
+            margin-bottom: 8px;
         }
 
-        /* Segmented Choice Capsular Track */
         .segmented-control {
             display: flex;
             background: #f1f3f5;
             padding: 4px;
-            border-radius: 12px;
-            margin-bottom: 24px;
+            border-radius: 8px;
+            margin-bottom: 20px;
             border: 1px solid #e9ecef;
         }
 
@@ -72,111 +67,94 @@
 
         .segmented-control span {
             display: block;
-            padding: 12px 10px;
+            padding: 10px;
             font-size: 13px;
             font-weight: 700;
             color: #495057;
-            border-radius: 10px;
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
         }
 
         .segmented-control input[type="radio"]:checked + span {
             background: #ffffff;
             color: #b31d1d;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
         }
 
-        /* Sleek Outline Border Floating Field Architecture */
         .form-group {
-            position: relative;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
-            position: absolute;
-            left: 14px;
-            top: -9px;
-            background: #ffffff;
-            padding: 0 6px;
-            font-size: 12px;
-            font-weight: 700;
-            color: #868e96;
-            transition: all 0.2s ease;
-            letter-spacing: 0.3px;
-        }
-
-        .form-group:focus-within label {
-            color: #b31d1d;
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333333;
+            margin-bottom: 8px;
         }
 
         input[type="text"],
         input[type="date"],
         select {
             width: 100%;
-            padding: 14px 16px;
-            border: 1.5px solid #ced4da;
-            border-radius: 12px;
+            padding: 12px 14px;
+            border: 1px solid #cccccc;
+            border-radius: 8px;
             font-size: 15px;
-            font-weight: 500;
-            color: #343a40;
+            color: #444444;
             background-color: #ffffff !important;
             outline: none;
-            height: 52px;
-            transition: all 0.2s ease;
+            height: 48px;
+            transition: border-color 0.2s;
         }
 
         input[type="text"]:focus,
         input[type="date"]:focus,
         select:focus {
             border-color: #b31d1d;
-            box-shadow: 0 0 0 4px rgba(179, 29, 29, 0.1);
         }
 
         .submit-btn {
             width: 100%;
-            background: linear-gradient(135deg, #b31d1d 0%, #cd2323 100%);
+            background-color: #b31d1d;
             color: #ffffff;
             border: none;
-            padding: 16px;
+            padding: 14px;
             font-size: 16px;
-            font-weight: 700;
-            border-radius: 14px;
+            font-weight: bold;
+            border-radius: 8px;
             cursor: pointer;
             margin-top: 8px;
-            height: 54px;
-            box-shadow: 0 4px 15px rgba(179, 29, 29, 0.2);
-            transition: all 0.2s ease;
+            height: 50px;
+            transition: background-color 0.2s;
         }
 
         .submit-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(179, 29, 29, 0.3);
+            background-color: #911616;
         }
 
-        /* Dashboard-Style Visual Report Card */
         .result-box {
-            margin-top: 26px;
-            padding: 20px;
+            margin-top: 24px;
+            padding: 16px;
             background-color: #fffafA;
             border: 1px solid rgba(179, 29, 29, 0.15);
-            border-radius: 16px;
+            border-radius: 12px;
             display: none;
         }
 
         .result-box.active {
             display: block;
-            animation: fadeIn 0.4s ease-out;
         }
 
         .result-line {
             font-size: 14px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             color: #495057;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 8px;
+            padding-bottom: 6px;
             border-bottom: 1px dashed #f1f3f5;
         }
 
@@ -193,7 +171,7 @@
 
         .result-value.highlight {
             color: #b31d1d;
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .share-btn {
@@ -203,110 +181,161 @@
             border: none;
             padding: 14px;
             font-size: 15px;
-            font-weight: 700;
-            border-radius: 14px;
+            font-weight: bold;
+            border-radius: 8px;
             cursor: pointer;
             margin-top: 14px;
             display: none;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            height: 52px;
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
-            transition: all 0.2s ease;
+            height: 48px;
+            transition: background-color 0.2s;
         }
 
         .share-btn:hover {
             background-color: #1ebd58;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 18px rgba(37, 211, 102, 0.3);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .switch-lang {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #666666;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .switch-lang:hover {
+            color: #b31d1d;
         }
     </style>
 </head>
 <body>
-
 <div class="calculator-card">
-    <div class="title">வட்டி கணக்கீட்டாளர்</div>
+    <div class="title" id="calcTitle">வட்டி கணக்கீட்டாளர்</div>
     
     <form id="vattiForm" onsubmit="runCalculation(event)">
-        <!-- Calculation Mode Toggles -->
-        <span class="section-label">கணக்கீடு முறை:</span>
+        <span class="section-label" id="lblCalcMethod">கணக்கீடு முறை:</span>
         <div class="segmented-control">
             <label>
                 <input type="radio" name="interestMode" value="thani" checked onchange="switchMode('thani')">
-                <span>தனி வட்டி</span>
+                <span id="optThani">தனி வட்டி</span>
             </label>
             <label>
                 <input type="radio" name="interestMode" value="kootu" onchange="switchMode('kootu')">
-                <span>கூட்டு வட்டி</span>
+                <span id="optKootu">கூட்டு வட்டி</span>
             </label>
         </div>
 
-        <!-- Real-Time Masking Input Box -->
         <div class="form-group">
-            <label>அசல் தொகை (Asal)</label>
+            <label id="lblAsal">அசல் தொகை (Asal):</label>
             <input type="text" id="asal" placeholder="எ.கா. 1,00,000" required oninput="handleAsalInput(this)">
         </div>
 
-        <!-- Category Configurations Toggles -->
-        <span class="section-label">வட்டி வகை:</span>
+        <span class="section-label" id="lblVattiVagai">வட்டி வகை:</span>
         <div class="segmented-control">
             <label>
                 <input type="radio" name="rateCategory" value="rupee" checked onchange="adaptPlaceholder()">
-                <span>ரூபாய் / பைசா வட்டி (மாதத்திற்கு)</span>
+                <span id="optRupee">ரூபாய் / பைசா வட்டி (மாதத்திற்கு)</span>
             </label>
             <label>
                 <input type="radio" name="rateCategory" value="bank" onchange="adaptPlaceholder()">
-                <span>Bank வட்டி % (ஆண்டிற்கு)</span>
+                <span id="optBank">Bank வட்டி % (ஆண்டிற்கு)</span>
             </label>
         </div>
 
-        <!-- Interest Rate Box -->
         <div class="form-group">
-            <label>வட்டி விகிதம்</label>
+            <label id="lblVattiVigitham">வட்டி விகிதம்:</label>
             <input type="text" id="vattiRate" placeholder="எ.கா. 2 (ரூ.2 வட்டிக்கு)" required>
         </div>
 
-        <!-- Compound Interval Dropdown Options -->
         <div class="form-group" id="compoundFreqGroup" style="display: none;">
-            <label>கூட்டு வட்டி முறை</label>
+            <label id="lblFreq">கூட்டு வட்டி முறை:</label>
             <select id="compoundFreq">
-                <option value="12">மாதமொருமுறை</option>
-                <option value="4">மூன்று மாதமொருமுறை</option>
-                <option value="2">ஆறு மாதமொருமுறை</option>
-                <option value="1" selected>ஆண்டிற்கு ஒருமுறை</option>
+                <option value="12" id="optMonthly">மாதமொருமுறை</option>
+                <option value="4" id="optQuarterly">மூன்று மாதமொருமுறை</option>
+                <option value="2" id="optHalfYearly">ஆறு மாதமொருமுறை</option>
+                <option value="1" id="optAnnually" selected>ஆண்டிற்கு ஒருமுறை</option>
             </select>
         </div>
 
-        <!-- Dates fields -->
         <div class="form-group">
-            <label>தொடங்கிய தேதி</label>
+            <label id="lblStartDate">தொடங்கிய தேதி:</label>
             <input type="date" id="startDate" required>
         </div>
 
         <div class="form-group">
-            <label>முடிவுற்ற தேதி</label>
+            <label id="lblEndDate">முடிவுற்ற தேதி:</label>
             <input type="date" id="endDate" required>
         </div>
 
-        <button type="submit" class="submit-btn">வட்டியைக் கணக்கிடு</button>
+        <button type="submit" class="submit-btn" id="btnCalculate">வட்டியைக் கணக்கிடு</button>
     </form>
 
     <div class="result-box" id="resultDisplay"></div>
     
-    <!-- Explicit Formless Redirection Button Controller -->
     <button type="button" id="btnShare" class="share-btn" onclick="sendWhatsApp()">
----
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.003 5.324 5.328 0 11.859 0c3.166.001 6.141 1.233 8.377 3.469 2.235 2.237 3.466 5.214 3.464 8.384-.003 6.536-5.328 11.86-11.859 11.86-.1.052-2.071-.05-3.056-.314L0 24zm6.177-3.693c1.076.638 2.232.975 3.425.976 5.433 0 9.85-4.414 9.853-9.845.002-2.63-1.023-5.101-2.885-6.964C14.76 2.612 12.289 1.58 9.66 1.58c-5.434 0-9.852 4.414-9.854 9.846-.001 1.25.333 2.474.966 3.535L.71 20.173l5.524-1.866zm10.742-5.47c-.287-.144-1.702-.84-1.966-.935-.264-.097-.456-.144-.648.144-.192.288-.744.936-.912 1.129-.168.192-.336.216-.624.072-.288-.145-1.215-.447-2.313-1.427-.855-.762-1.432-1.704-1.609-1.993-.168-.288-.018-.444.126-.587.13-.13.288-.337.432-.505.144-.169.192-.289.288-.481.097-.193.048-.361-.024-.505-.072-.144-.648-1.56-.888-2.136-.234-.564-.473-.488-.648-.497-.168-.008-.36-.01-.552-.01s-.504.071-.768.361c-.264.288-1.008.985-1.008 2.399 0 1.415 1.031 2.787 1.175 2.98.144.192 2.03 3.1 4.916 4.344.686.296 1.223.473 1.64.605.69.219 1.319.189 1.816.115.553-.083 1.703-.696 1.943-1.368.24-.672.24-1.25.168-1.368-.072-.119-.264-.192-.552-.337z"/></svg>
+        <span id="btnShareText">WhatsApp பகிர்க</span>
+    </button>
 
-
+    <div class="switch-lang" id="langToggle" onclick="toggleLanguage()">Switch to English</div>
+</div>
 <script>
+    let currentLang = 'ta';
     let currentMode = 'thani'; 
     let generatedSummaryText = "";
+
+    const translations = {
+        ta: {
+            title: "வட்டி கணக்கீட்டாளர்",
+            asal: "அசல் தொகை (Asal):",
+            vagal: "வட்டி வகை:",
+            calcMethod: "கணக்கீடு முறை:",
+            vigitham: "வட்டி விகிதம்:",
+            start: "தொடங்கிய தேதி:",
+            end: "முடிவுற்ற தேதி:",
+            btn: "வட்டியைக் கணக்கிடு",
+            toggle: "Switch to English",
+            freqLabel: "கூட்டு வட்டி முறை:",
+            placeholderRupee: "எ.கா. 2 (ரூ.2 வட்டிக்கு)",
+            placeholderBank: "எ.கா. 7.5 (% ஆண்டிற்கு)",
+            optThani: "தனி வட்டி",
+            optKootu: "கூட்டு வட்டி",
+            optRupee: "ரூபாய் / பைசா வட்டி (மாதத்திற்கு)",
+            optBank: "Bank வட்டி % (ஆண்டிற்கு)",
+            optMonthly: "மாதமொருமுறை",
+            optQuarterly: "மூன்று மாதமொருமுறை",
+            optHalfYearly: "ஆறு மாதமொருமுறை",
+            optAnnually: "ஆண்டிற்கு ஒருமுறை",
+            shareBtn: "WhatsApp பகிர்க"
+        },
+        en: {
+            title: "Interest Calculator",
+            asal: "Principal Amount (Asal):",
+            vagal: "Interest Type:",
+            calcMethod: "Calculation Mode:",
+            vigitham: "Interest Rate:",
+            start: "Start Date:",
+            end: "End Date:",
+            btn: "Calculate Interest",
+            toggle: "தமிழில் மாற்றவும்",
+            freqLabel: "Compounding Period:",
+            placeholderRupee: "e.g. 2 (for Rs.2 Vatti)",
+            placeholderBank: "e.g. 7.5 (% Per Annum)",
+            optThani: "Simple Interest",
+            optKootu: "Compound Interest",
+            optRupee: "Rupee / Paisa Vatti (Monthly)",
+            optBank: "Bank Interest % (Annually)",
+            optMonthly: "Monthly",
+            optQuarterly: "Quarterly",
+            optHalfYearly: "Half-Yearly",
+            optAnnually: "Annually",
+            shareBtn: "Share on WhatsApp"
+        }
+    };
 
     function parseRawNumber(str) {
         return parseFloat(str.replace(/,/g, '')) || 0;
@@ -358,7 +387,34 @@
     function adaptPlaceholder() {
         const type = getSelectedRateCategory();
         const rateInput = document.getElementById('vattiRate');
-        rateInput.placeholder = (type === 'rupee') ? "எ.கா. 2 (ரூ.2 வட்டிக்கு)" : "எ.கா. 7.5 (% ஆண்டிற்கு)";
+        rateInput.placeholder = (type === 'rupee') ? translations[currentLang].placeholderRupee : translations[currentLang].placeholderBank;
+    }
+
+    function toggleLanguage() {
+        currentLang = (currentLang === 'ta') ? 'en' : 'ta';
+        const t = translations[currentLang];
+        
+        document.getElementById('calcTitle').innerText = t.title;
+        document.getElementById('lblCalcMethod').innerText = t.calcMethod;
+        document.getElementById('lblAsal').innerText = t.asal;
+        document.getElementById('lblVattiVagai').innerText = t.vagal;
+        document.getElementById('lblVattiVigitham').innerText = t.vigitham;
+        document.getElementById('lblStartDate').innerText = t.start;
+        document.getElementById('lblEndDate').innerText = t.end;
+        document.getElementById('btnCalculate').innerText = t.btn;
+        document.getElementById('langToggle').innerText = t.toggle;
+        document.getElementById('lblFreq').innerText = t.freqLabel;
+        document.getElementById('optThani').innerText = t.optThani;
+        document.getElementById('optKootu').innerText = t.optKootu;
+        document.getElementById('optRupee').innerText = t.optRupee;
+        document.getElementById('optBank').innerText = t.optBank;
+        document.getElementById('optMonthly').innerText = t.optMonthly;
+        document.getElementById('optQuarterly').innerText = t.optQuarterly;
+        document.getElementById('optHalfYearly').innerText = t.optHalfYearly;
+        document.getElementById('optAnnually').innerText = t.optAnnually;
+        document.getElementById('btnShareText').innerText = t.shareBtn;
+        
+        adaptPlaceholder();
     }
 
     function runCalculation(event) {
@@ -376,7 +432,7 @@
         const end = new Date(endStr);
         
         if (end < start) {
-            alert("முடிவுற்ற தேதி தொடங்கிய தேதியை விட அதிகமாக இருக்க வேண்டும்!");
+            alert(currentLang === 'ta' ? "முடிவுற்ற தேதி தொடங்கிய தேதியை விட அதிகமாக இருக்க வேண்டும்!" : "End date must be after Start date!");
             return;
         }
 
@@ -401,7 +457,13 @@
 
         let interest = 0;
         let totalAmount = 0;
-        const modeLabelText = (currentMode === 'thani') ? "தனி வட்டி" : "கூட்டு வட்டி";
+        
+        let modeLabelText = "";
+        if (currentLang === 'ta') {
+            modeLabelText = (currentMode === 'thani') ? "தனி வட்டி" : "கூட்டு வட்டி";
+        } else {
+            modeLabelText = (currentMode === 'thani') ? "Simple Interest" : "Compound Interest";
+        }
 
         if (currentMode === 'thani') {
             interest = (principal / 100) * monthlyRateConverted * totalMonths;
@@ -420,29 +482,36 @@
         const display = document.getElementById('resultDisplay');
         display.classList.add('active');
 
-        const durationTextString = `${years} வருடம், ${months} மாதம், ${days} நாட்கள்`;
+        let durationTextString = "";
+        if (currentLang === 'ta') {
+            durationTextString = years + " வருடம், " + months + " மாதம், " + days + " நாட்கள்";
+        } else {
+            durationTextString = years + " Year(s), " + months + " Month(s), " + days + " Day(s)";
+        }
 
         const formattedPrincipal = formatIndianCurrency(principal);
         const formattedInterest = formatIndianCurrency(interest);
         const formattedTotal = formatIndianCurrency(totalAmount);
 
-        display.innerHTML = `
-            <div class="result-line"><span>கணக்கீடு முறை</span><span class="result-value">${modeLabelText}</span></div>
-            <div class="result-line"><span>அசல் தொகை</span><span class="result-value">₹${formattedPrincipal}</span></div>
-            <div class="result-line"><span>கால அளவு</span><span class="result-value">${durationTextString}</span></div>
-            <div class="result-line"><span>வட்டித் தொகை</span><span class="result-value highlight">₹${formattedInterest}</span></div>
-            <div class="result-line"><span>மொத்தத் தொகை</span><span class="result-value highlight">₹${formattedTotal}</span></div>
-        `;
-        
-        generatedSummaryText = `*வட்டி விபரங்கள் (${modeLabelText})*\n\nஅசல் தொகை: ₹${formattedPrincipal}\nகால அளவு: ${durationTextString}\nவட்டித் தொகை: ₹${formattedInterest}\nமொத்தத் தொகை: ₹${formattedTotal}`;
-
-        document.getElementById('btnShare').style.display = 'flex';
-    }
-
-    function sendWhatsApp() {
-        if (!generatedSummaryText) return;
-        window.open("https://whatsapp.com" + encodeURIComponent(generatedSummaryText), "_blank");
-    }
-</script>
-</body>
-    </html>
+        if (currentLang === 'ta') {
+            display.innerHTML = '<div class="result-line"><span>கணக்கீடு முறை</span><span class="result-value">' + modeLabelText + '</span></div>' +
+                '<div class="result-line"><span>அசல் தொகை</span><span class="result-value">₹' + formattedPrincipal + '</span></div>' +
+                '<div class="result-line"><span>கால அளவு</span><span class="result-value">' + durationTextString + '</span></div>' +
+                '<div class="result-line"><span>வட்டித் தொகை</span><span class="result-value highlight">₹' + formattedInterest + '</span></div>' +
+                '<div class="result-line"><span>மொத்தத் தொகை</span><span class="result-value highlight">₹' + formattedTotal + '</span></div>';
+            
+            generatedSummaryText = "*வட்டி விபரங்கள் (" + modeLabelText + ")*\n\nஅசல் தொகை: ₹" + formattedPrincipal + "\nகால அளவு: " + durationTextString + "\nவட்டித் தொகை: ₹" + formattedInterest + "\nமொத்தத் தொகை: ₹" + formattedTotal;
+        } else {
+            display.innerHTML = '<div class="result-line"><span>Calculation Type</span><span class="result-value">' + modeLabelText + '</span></div>' +
+                '<div class="result-line"><span>Principal Amount</span><span class="result-value">₹' + formattedPrincipal + '</span></div>' +
+'Duration' + durationTextString + '' +
+'Interest Amount₹' + formattedInterest + '' +
+'Total Amount₹' + formattedTotal + '';
+generatedSummaryText = "Interest Details (" + modeLabelText + ")\n\nPrincipal Amount: ₹" + formattedPrincipal + "\nDuration: " + durationTextString + "\nInterest Amount: ₹" + formattedInterest + "\nTotal Amount: ₹" + formattedTotal;
+}
+document.getElementById('btnShare').style.display = 'flex';
+}
+function sendWhatsApp() {
+if (!generatedSummaryText) return;
+window.open("whatsapp.com" + encodeURIComponent(generatedSummaryText), "_blank");
+}
