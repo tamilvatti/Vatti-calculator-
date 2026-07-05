@@ -47,7 +47,6 @@
             margin-bottom: 8px;
         }
 
-        /* Clean Traditional Radio Row Layout */
         .radio-group-row {
             display: flex;
             flex-direction: row;
@@ -208,7 +207,7 @@
     <div class="title" id="calcTitle">வட்டி கணக்கீட்டாளர்</div>
     
     <form id="vattiForm" onsubmit="runCalculation(event)">
-        <!-- Clean Radio Set 1: Calculation Mode -->
+        <!-- Radio Buttons for Calculation Mode -->
         <span class="section-label" id="lblCalcMethod">கணக்கீடு முறை:</span>
         <div class="radio-group-row">
             <label class="radio-option">
@@ -226,17 +225,13 @@
             <input type="text" id="asal" placeholder="எ.கா. 1,00,000" required oninput="handleAsalInput(this)">
         </div>
 
-        <!-- Clean Radio Set 2: Interest Type -->
-        <span class="section-label" id="lblVattiVagai">வட்டி வகை:</span>
-        <div class="radio-group-row">
-            <label class="radio-option">
-                <input type="radio" name="rateCategory" value="rupee" checked onchange="adaptPlaceholder()">
-                <span id="optRupee">ரூபாய் / பைசா வட்டி (மாதத்திற்கு)</span>
-            </label>
-            <label class="radio-option">
-                <input type="radio" name="rateCategory" value="bank" onchange="adaptPlaceholder()">
-                <span id="optBank">Bank வட்டி % (ஆண்டிற்கு)</span>
-            </label>
+        <!-- Dropdown Menu for Interest Type -->
+        <div class="form-group">
+            <label id="lblVattiVagai">வட்டி வகை:</label>
+            <select id="vattiVagai" onchange="adaptPlaceholder()">
+                <option value="rupee" id="optRupee">ரூபாய் / பைசா வட்டி (மாதத்திற்கு)</option>
+                <option value="bank" id="optBank">Bank வட்டி % (ஆண்டிற்கு)</option>
+            </select>
         </div>
 
         <div class="form-group">
@@ -370,20 +365,6 @@
         document.getElementById('btnShare').style.display = 'none';
     }
 
-    function getSelectedRateCategory() {
-        const radios = document.getElementsByName('rateCategory');
-        for (let radio of radios) {
-            if (radio.checked) return radio.value;
-        }
-        return 'rupee';
-    }
-
-    function adaptPlaceholder() {
-        const type = getSelectedRateCategory();
-        const rateInput = document.getElementById('vattiRate');
-        rateInput.placeholder = (type === 'rupee') ? translations[currentLang].placeholderRupee : translations[currentLang].placeholderBank;
-    }
-
     function toggleLanguage() {
         currentLang = (currentLang === 'ta') ? 'en' : 'ta';
         const t = translations[currentLang];
@@ -415,7 +396,7 @@
         
         const principal = parseRawNumber(document.getElementById('asal').value);
         const rate = parseFloat(document.getElementById('vattiRate').value);
-        const type = getSelectedRateCategory();
+        const type = document.getElementById('vattiVagai').value;
         const startStr = document.getElementById('startDate').value;
         const endStr = document.getElementById('endDate').value;
 
@@ -505,6 +486,12 @@
         }
 
         document.getElementById('btnShare').style.display = 'flex';
+    }
+
+    function adaptPlaceholder() {
+        const type = document.getElementById('vattiVagai').value;
+        const rateInput = document.getElementById('vattiRate');
+        rateInput.placeholder = (type === 'rupee') ? translations[currentLang].placeholderRupee : translations[currentLang].placeholderBank;
     }
 
     function sendWhatsApp() {
