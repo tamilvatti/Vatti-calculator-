@@ -357,7 +357,6 @@
         inputElement.setSelectionRange(cursorPosition, cursorPosition);
     }
 
-    // Dynamic placeholder config logic responding flawlessly to local parameters
     function adaptPlaceholder() {
         const typeEl = document.getElementById('vattiVagai');
         const rateInput = document.getElementById('vattiRate');
@@ -489,7 +488,6 @@
         if (currentLang === 'ta') {
             outMessageText = "வட்டி விபரங்கள் (" + modeLabelText + ")\n\nஅசல் தொகை: ₹" + formattedPrincipal + "\nகால அளவு: " + durationTextString + "\nவட்டித் தொகை: ₹" + formattedInterest + "\nமொத்தத் தொகை: ₹" + formattedTotal;
             
-            // Replaced old domains with standard, direct wa.me universal linking channels
             display.innerHTML = '<div class="result-line"><span>கணக்கீடு முறை</span><span class="result-value">' + modeLabelText + '</span></div>' +
                 '<div class="result-line"><span>அசல் தொகை</span><span class="result-value">₹' + formattedPrincipal + '</span></div>' +
                 '<div class="result-line"><span>கால அளவு</span><span class="result-value">' + durationTextString + '</span></div>' +
