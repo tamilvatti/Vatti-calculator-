@@ -180,6 +180,7 @@
             justify-content: center;
             gap: 10px;
             height: 48px;
+            text-decoration: none;
             transition: background-color 0.2s;
         }
 
@@ -262,10 +263,11 @@
 
     <div class="result-box" id="resultDisplay"></div>
     
-    <button type="button" id="btnShare" class="share-btn" onclick="sendWhatsApp()">
+    <!-- Transformed to a true anchor element that receives native device intent redirection natively -->
+    <a id="btnShare" class="share-btn" href="" target="_blank">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.003 5.324 5.328 0 11.859 0c3.166.001 6.141 1.233 8.377 3.469 2.235 2.237 3.466 5.214 3.464 8.384-.003 6.536-5.328 11.86-11.859 11.86-.1.052-2.071-.05-3.056-.314L0 24zm6.177-3.693c1.076.638 2.232.975 3.425.976 5.433 0 9.85-4.414 9.853-9.845.002-2.63-1.023-5.101-2.885-6.964C14.76 2.612 12.289 1.58 9.66 1.58c-5.434 0-9.852 4.414-9.854 9.846-.001 1.25.333 2.474.966 3.535L.71 20.173l5.524-1.866zm10.742-5.47c-.287-.144-1.702-.84-1.966-.935-.264-.097-.456-.144-.648.144-.192.288-.744.936-.912 1.129-.168.192-.336.216-.624.072-.288-.145-1.215-.447-2.313-1.427-.855-.762-1.432-1.704-1.609-1.993-.168-.288-.018-.444.126-.587.13-.13.288-.337.432-.505.144-.169.192-.289.288-.481.097-.193.048-.361-.024-.505-.072-.144-.648-1.56-.888-2.136-.234-.564-.473-.488-.648-.497-.168-.008-.36-.01-.552-.01s-.504.071-.768.361c-.264.288-1.008.985-1.008 2.399 0 1.415 1.031 2.787 1.175 2.98.144.192 2.03 3.1 4.916 4.344.686.296 1.223.473 1.64.605.69.219 1.319.189 1.816.115.553-.083 1.703-.696 1.943-1.368.24-.672.24-1.25.168-1.368-.072-.119-.264-.192-.552-.337z"/></svg>
         <span id="btnShareText">WhatsApp பகிர்க</span>
-    </button>
+    </a >
 
     <div class="switch-lang" id="langToggle" onclick="toggleLanguage()">Switch to English</div>
 </div>
@@ -273,7 +275,6 @@
 <script>
     let currentLang = 'ta';
     let currentMode = 'thani'; 
-    let generatedSummaryText = "";
 
     const translations = {
         ta: {
@@ -398,7 +399,6 @@
         document.getElementById('optAnnually').innerText = t.optAnnually;
         document.getElementById('btnShareText').innerText = t.shareBtn;
         
-        generatedSummaryText = "";
         const resultCard = document.getElementById('resultDisplay');
         resultCard.classList.remove('active');
         resultCard.innerHTML = "";
@@ -410,7 +410,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         adaptPlaceholder();
     });
-    function runCalculation(event) {
+        function runCalculation(event) {
         event.preventDefault();
         
         const principal = parseRawNumber(document.getElementById('asal').value);
@@ -486,6 +486,8 @@
         const formattedInterest = formatIndianCurrency(interest);
         const formattedTotal = formatIndianCurrency(totalAmount);
 
+        let outMessageText = "";
+
         if (currentLang === 'ta') {
             display.innerHTML = '<div class="result-line"><span>கணக்கீடு முறை</span><span class="result-value">' + modeLabelText + '</span></div>' +
                 '<div class="result-line"><span>அசல் தொகை</span><span class="result-value">₹' + formattedPrincipal + '</span></div>' +
@@ -493,7 +495,7 @@
                 '<div class="result-line"><span>வட்டித் தொகை</span><span class="result-value highlight">₹' + formattedInterest + '</span></div>' +
                 '<div class="result-line"><span>மொத்தத் தொகை</span><span class="result-value highlight">₹' + formattedTotal + '</span></div>';
             
-            generatedSummaryText = "வட்டி விபரங்கள் (" + modeLabelText + ")\n\nஅசல் தொகை: ₹" + formattedPrincipal + "\nகால அளவு: " + durationTextString + "\nவட்டித் தொகை: ₹" + formattedInterest + "\nமொத்தத் தொகை: ₹" + formattedTotal;
+            outMessageText = "வட்டி விபரங்கள் (" + modeLabelText + ")\n\nஅசல் தொகை: ₹" + formattedPrincipal + "\nகால அளவு: " + durationTextString + "\nவட்டித் தொகை: ₹" + formattedInterest + "\nமொத்தத் தொகை: ₹" + formattedTotal;
         } else {
             display.innerHTML = '<div class="result-line"><span>Calculation Type</span><span class="result-value">' + modeLabelText + '</span></div>' +
                 '<div class="result-line"><span>Principal Amount</span><span class="result-value">₹' + formattedPrincipal + '</span></div>' +
@@ -501,17 +503,15 @@
                 '<div class="result-line"><span>Interest Amount</span><span class="result-value highlight">₹' + formattedInterest + '</span></div>' +
                 '<div class="result-line"><span>Total Amount</span><span class="result-value highlight">₹' + formattedTotal + '</span></div>';
             
-            generatedSummaryText = "Interest Details (" + modeLabelText + ")\n\nPrincipal Amount: ₹" + formattedPrincipal + "\nDuration: " + durationTextString + "\nInterest Amount: ₹" + formattedInterest + "\nTotal Amount: ₹" + formattedTotal;
+            outMessageText = "Interest Details (" + modeLabelText + ")\n\nPrincipal Amount: ₹" + formattedPrincipal + "\nDuration: " + durationTextString + "\nInterest Amount: ₹" + formattedInterest + "\nTotal Amount: ₹" + formattedTotal;
         }
 
-        document.getElementById('btnShare').style.display = 'flex';
-    }
-
-    // Direct local device frame routing bypassing intermediate framework handlers
-    function sendWhatsApp() {
-        if (!generatedSummaryText) return;
-        window.location.href = "https://whatsapp.com" + encodeURIComponent(generatedSummaryText);
+        // Direct native link injection that bypasses system filters perfectly
+        const shareLinkNode = document.getElementById('btnShare');
+        shareLinkNode.href = "https://wa.me" + encodeURIComponent(outMessageText);
+        shareLinkNode.style.display = 'flex';
     }
 </script>
 </body>
 </html>
+
