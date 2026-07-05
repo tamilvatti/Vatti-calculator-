@@ -260,6 +260,7 @@
         <button type="submit" class="submit-btn" id="btnCalculate">வட்டியைக் கணக்கிடு</button>
     </form>
 
+    <!-- முடிவுகள் தோன்றும் இடம் (பட்டன்களும் இதனுள்ளே தான் வரும்) -->
     <div class="result-box" id="resultDisplay"></div>
     
     <div class="switch-lang" id="langToggle" onclick="toggleLanguage()">Switch to English</div>
@@ -498,6 +499,7 @@
         let shareBtnLabel = translations[currentLang].shareBtn;
         const targetWhatsAppURL = "https://whatsapp.com" + encodeURIComponent(outMessageText);
 
+        // கணக்கிடு பொத்தானை அழுத்தியதும் முடிவுகளுடன் சேர்த்து பட்டன்களும் உருவாக்கப்படும்
         display.innerHTML = 
             `<div class="result-line"><span>${labels.method}</span><span class="result-value">${modeLabelText}</span></div>` +
             `<div class="result-line"><span>${labels.principal}</span><span class="result-value">₹${formattedPrincipal}</span></div>` +
