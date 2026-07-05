@@ -3,62 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interest Calculator</title>
-    
-    <!-- 1. CSS STYLES -->
+    <title>Premium Interest Calculator</title>
     <style>
+        /* Premium Modern Interface Styling */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         body {
-            background-color: #f4f6f9;
-            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #1e293b;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            padding: 24px;
         }
 
+        /* Glassmorphism App Container Card */
         .calculator-card {
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.95);
             width: 100%;
-            max-width: 480px;
-            padding: 28px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            max-width: 460px;
+            padding: 32px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: transform 0.3s ease;
         }
 
         .seo-text h3 {
-            font-size: 1.3rem;
-            color: #1a237e;
-            margin-bottom: 8px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 10px;
             text-align: center;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
         }
 
         .seo-text p {
             font-size: 0.9rem;
-            color: #666;
-            line-height: 1.5;
+            color: #64748b;
+            line-height: 1.6;
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
 
+        /* Fluid Form Group Architecture */
         .g {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
             display: flex;
             flex-direction: column;
         }
 
         label {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            color: #4a5568;
-            margin-bottom: 6px;
+            color: #475569;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         input[type="text"],
@@ -66,93 +74,123 @@
         input[type="date"],
         select {
             width: 100%;
-            padding: 12px 14px;
-            font-size: 1rem;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 8px;
-            background-color: #fff;
-            color: #2d3748;
+            padding: 14px 16px;
+            font-size: 0.95rem;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            background-color: #f8fafc;
+            color: #0f172a;
             outline: none;
-            transition: all 0.2s ease;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         input:focus, select:focus {
-            border-color: #3f51b5;
-            box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.15);
+            border-color: #2563eb;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
         }
 
         .date-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 14px;
+            gap: 16px;
         }
 
+        /* High-Contrast Interactive CTA Button */
         .calc-btn {
             width: 100%;
-            background-color: #3f51b5;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             color: white;
-            padding: 14px;
+            padding: 16px;
             border: none;
-            border-radius: 8px;
-            font-size: 1.05rem;
+            border-radius: 12px;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
-            margin-top: 8px;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            transition: all 0.2s ease;
+            margin-top: 10px;
         }
 
         .calc-btn:hover {
-            background-color: #303f9f;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
         }
 
+        .calc-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* Elegant Micro-interaction Result Dashboard */
         .res {
             display: none;
-            margin-top: 24px;
-            padding: 16px;
-            background-color: #f8fafc;
-            border-left: 4px solid #b71c1c;
-            border-radius: 0 8px 8px 0;
+            margin-top: 28px;
+            padding: 20px;
+            background-color: #fff1f2;
+            border-left: 5px solid #e11d48;
+            border-radius: 4px 16px 16px 4px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.01);
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .res p {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
+            align-items: center;
+            margin-bottom: 12px;
             font-size: 0.95rem;
+            color: #4c0519;
         }
 
         .res p:last-child {
             margin-bottom: 0;
-            padding-top: 8px;
-            border-top: 1px dashed #e2e8f0;
+            padding-top: 12px;
+            border-top: 1px dashed rgba(225, 29, 72, 0.2);
+        }
+
+        #outTime {
+            font-weight: 600;
+            color: #9f1239;
         }
 
         #outInterest, #outTotal {
-            font-weight: bold;
-            color: #b71c1c;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #e11d48;
         }
 
+        /* Seamless Brand WhatsApp Button Integration */
         .wa-btn {
             display: none;
             text-align: center;
             width: 100%;
-            background-color: #25D366;
+            background-color: #22c55e;
             color: white;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 14px;
+            border-radius: 12px;
             text-decoration: none;
             font-weight: 600;
             font-size: 0.95rem;
-            margin-top: 14px;
-            transition: background 0.2s;
+            margin-top: 16px;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.15);
+            transition: all 0.2s ease;
         }
 
         .wa-btn:hover {
-            background-color: #1ebd58;
+            background-color: #16a34a;
+            box-shadow: 0 6px 16px rgba(34, 197, 94, 0.25);
+            transform: translateY(-1px);
         }
 
+        /* Clean Structural Action Controls */
         .lang-container {
-            margin-top: 24px;
+            margin-top: 28px;
             display: flex;
             justify-content: center;
         }
@@ -160,28 +198,30 @@
         .lang-btn {
             background: none;
             border: none;
-            color: #5c6bc0;
+            color: #4f46e5;
             font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
-            text-decoration: underline;
+            transition: color 0.2s;
+            text-decoration: none;
+            letter-spacing: 0.3px;
         }
 
         .lang-btn:hover {
-            color: #3f51b5;
+            color: #3730a3;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
 
 <div class="calculator-card">
-    <!-- 2. HTML LAYOUT -->
     <div class="seo-text">
         <h3 id="sTitle">தமிழ்நாடு கிராமப்புற தனி மற்றும் கூட்டு வட்டி கணக்கீடு</h3>
         <p id="sDesc">Compute traditional Roopa/Paisa Vatti and Bank interest scales dynamically.</p>
     </div>
 
-    <!-- Interest Type Dropdown is now FIRST -->
+    <!-- Interest Type Selection Layout Vector (FIRST INPUT ARRAY) -->
     <div class="g">
         <label id="l3">வட்டி வகை (Interest Type):</label>
         <select id="calcType" onchange="updatePlaceholderAndLabels()">
@@ -225,11 +265,11 @@
         <button id="tg" class="lang-btn" onclick="calcToggleLang()">Switch to English</button>
     </div>
 </div>
-<!-- 3. JAVASCRIPT LOGIC -->
+    <!-- 3. JAVASCRIPT LOGIC -->
 <script>
     let isTamil = true; 
 
-    // Dynamically updates placeholders when type changes
+    // Dynamic Context Content Layout Component Handler
     function updatePlaceholderAndLabels() {
         const cType = document.getElementById('calcType').value;
         const rateLabel = document.getElementById('l2');
@@ -310,11 +350,9 @@
         let totalAmount = 0;
 
         if (cType === 'roopa') {
-            // Traditional Thani Vatti (Simple Interest)
             finalInterest = pVal * (rateVal / 100) * totalMonths;
             totalAmount = pVal + finalInterest;
         } else {
-            // Bank Kootu Vatti (Compound Interest - Annual Compounding standard)
             const annualRateDecimal = rateVal / 100;
             totalAmount = pVal * Math.pow((1 + annualRateDecimal), totalYears);
             finalInterest = totalAmount - pVal;
@@ -399,3 +437,4 @@
 </script>
 </body>
 </html>
+
