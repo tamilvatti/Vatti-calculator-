@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>வட்டி கணக்கீட்டாளர் - Interest Calculator</title>
+    <meta name="description" content="ஆன்லைன் வட்டி கணக்கீட்டாளர்: கிராமத்து ரூபாய் வட்டி, பைசா வட்டி, தனி வட்டி மற்றும் கூட்டு வட்டி ஆகியவற்றைத் துல்லியமாகக் கணக்கிட சிறந்த Village Vatti Calculator.">
+<meta name="keywords" content="வட்டி கணக்கீட்டாளர், வட்டி கால்குலேட்டர், தனி வட்டி, கூட்டு வட்டி, ரூபாய் வட்டி, பைசா வட்டி கணக்கு, Village Vatti Calculator, Simple Interest, Compound Interest, Local Finance Calculation, Vatti Kanaku Tamil">
+
+    <title>வட்டி கணக்கீட்டாளர் | Village Vatti Calculator - Local Simple & Compound Interest</title>
+
     <style>
         * {
             box-sizing: border-box;
@@ -82,6 +86,7 @@
             font-weight: 600;
             color: #333333;
             margin-bottom: 8px;
+            line-height: 1.4;
         }
 
         .input-row-3 {
@@ -90,13 +95,15 @@
             gap: 10px;
         }
 
+        /* Perfectly centers the text element */
         .divider-text {
             display: block;
             text-align: center;
             font-size: 14px;
             font-weight: bold;
             color: #777777;
-            margin: 25px 0 15px 0;
+            margin: 20px auto;
+            width: 100%;
         }
 
         input[type="text"],
@@ -202,6 +209,7 @@
             border-radius: 8px;
             cursor: pointer;
             display: flex;
+            flex: 1;
             align-items: center;
             justify-content: center;
             gap: 10px;
@@ -301,6 +309,7 @@
             </div>
         </div>
 
+        <!-- Centered structural divider element text layout node -->
         <span class="divider-text" id="lblDivider">- அல்லது -</span>
 
         <div class="form-group">
@@ -396,7 +405,6 @@
         return parseFloat(str.replace(/,/g, '')) || 0;
     }
 
-    // RESOLVED DEPLOYMENT CRASH: Array brackets [0] and [1] are explicitly added to fix compiler crashes
     function formatIndianCurrency(amount) {
         if (isNaN(amount)) return "0.00";
         let parts = amount.toFixed(2).split('.');
@@ -420,6 +428,7 @@
         return otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + "," + lastThree;
     }
 
+    // Handles layout currency masking on keystrokes
     function handleAsalInput(inputElement) {
         let cursorPosition = inputElement.selectionStart;
         let originalLength = inputElement.value.length;
