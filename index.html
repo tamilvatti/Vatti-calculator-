@@ -165,9 +165,8 @@
             font-size: 16px;
         }
 
-        /* Fixed Action Row Container styling elements */
         .action-row {
-            display: none; /* Hidden on load, turns to flex after calculate is hit */
+            display: none;
             gap: 10px;
             margin-top: 16px;
         }
@@ -290,12 +289,11 @@
         <button type="submit" class="submit-btn" id="btnCalculate">வட்டியைக் கணக்கிடு</button>
     </form>
 
-    <!-- Calculation Data Area Box -->
     <div class="result-box" id="resultDisplay"></div>
     
-    <!-- FIXED FIXED FIXED: The action buttons are now permanent elements to prevent pop-up blocking -->
+    <!-- FIXED: Removed target="_blank" so the mobile app opens seamlessly in the same window context -->
     <div class="action-row" id="buttonsBar">
-        <a class="share-btn" id="whatsappLink" href="#" target="_blank">
+        <a class="share-btn" id="whatsappLink" href="#">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.003 5.324 5.328 0 11.859 0c3.166.001 6.141 1.233 8.377 3.469 2.235 2.237 3.466 5.214 3.464 8.384-.003 6.536-5.328 11.86-11.859 11.86-.1.052-2.071-.05-3.056-.314L0 24zm6.177-3.693c1.076.638 2.232.975 3.425.976 5.433 0 9.85-4.414 9.853-9.845.002-2.63-1.023-5.101-2.885-6.964C14.76 2.612 12.289 1.58 9.66 1.58c-5.434 0-9.852 4.414-9.854 9.846-.001 1.25.333 2.474.966 3.535L.71 20.173l5.524-1.866zm10.742-5.47c-.287-.144-1.702-.84-1.966-.935-.264-.097-.456-.144-.648.144-.192.288-.744.936-.912 1.129-.168.192-.336.216-.624.072-.288-.145-1.215-.447-2.313-1.427-.855-.762-1.432-1.704-1.609-1.993-.168-.288-.018-.444.126-.587.13-.13.288-.337.432-.505.144-.169.192-.289.288-.481.097-.193.048-.361-.024-.505-.072-.144-.648-1.56-.888-2.136-.234-.564-.473-.488-.648-.497-.168-.008-.36-.01-.552-.01s-.504.071-.768.361c-.264.288-1.008.985-1.008 2.399 0 1.415 1.031 2.787 1.175 2.98.144.192 2.03 3.1 4.916 4.344.686.296 1.223.473 1.64.605.69.219 1.319.189 1.816.115.553-.083 1.703-.696 1.943-1.368.24-.672.24-1.25.168-1.368-.072-.119-.264-.192-.552-.337z"/></svg>
             <span id="txtShareBtn">WhatsApp பகிர்க</span>
         </a>
@@ -365,7 +363,6 @@
         return parseFloat(str.replace(/,/g, '')) || 0;
     }
 
-    // FIXED: Properly isolates indices [0] and [1] to permanently end the duplicate numbers printing bug
     function formatIndianCurrency(amount) {
         if (isNaN(amount)) return "0.00";
         let parts = amount.toFixed(2).split('.');
@@ -547,6 +544,9 @@
             clipboardTextRaw = `Interest Details (${modeLabelText})\nPrincipal Amount: ₹${formattedPrincipal}\nDuration: ${durationTextString}\nInterest Amount: ₹${formattedInterest}\nTotal Amount: ₹${formattedTotal}`;
         }
 
+        // FIXED: Uses official ://whatsapp.com standard protocol without causing pop-up restrictions
+        const targetWhatsAppURL = "https://://whatsapp.com/send?text=" + encodeURIComponent(outMessageText);
+
         display.innerHTML = 
             `<div class="result-line"><span>${labels.method}</span><span class="result-value">${modeLabelText}</span></div>` +
             `<div class="result-line"><span>${labels.principal}</span><span class="result-value">₹${formattedPrincipal}</span></div>` +
@@ -554,11 +554,10 @@
             `<div class="result-line"><span>${labels.interest}</span><span class="result-value highlight">₹${formattedInterest}</span></div>` +
             `<div class="result-line"><span>${labels.total}</span><span class="result-value highlight">₹${formattedTotal}</span></div>`;
 
-        // FIXED: Safely streams data attributes directly onto the permanent anchor link tag
+        // Direct layout assignment removes pop-up execution loops
         const linkElement = document.getElementById('whatsappLink');
-        linkElement.href = "https://whatsapp.com" + encodeURIComponent(outMessageText);
+        linkElement.href = targetWhatsAppURL;
         
-        // Makes the permanent button bar visible smoothly
         document.getElementById('buttonsBar').classList.add('active');
     }
 
