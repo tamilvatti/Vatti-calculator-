@@ -552,7 +552,8 @@
         if (type === 'rupee') {
             totalMonths = (years * 12) + months + (days / 30);
             totalYears = totalMonths / 12;
-        }         else {
+        }      
+        else {
             // Fixes the bank calculation mismatch by using flat unit ratios
             totalYears = years + (months / 12) + (days / 365);
             totalMonths = totalYears * 12;
