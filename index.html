@@ -84,7 +84,14 @@
             margin-bottom: 8px;
         }
 
+        .input-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+
         input[type="text"],
+        input[type="number"],
         input[type="date"],
         select {
             width: 100%;
@@ -100,6 +107,7 @@
         }
 
         input[type="text"]:focus,
+        input[type="number"]:focus,
         input[type="date"]:focus,
         select:focus {
             border-color: #b31d1d;
@@ -190,6 +198,7 @@
             justify-content: center;
             gap: 10px;
             height: 48px;
+            text-decoration: none;
             transition: background-color 0.2s;
         }
 
@@ -275,14 +284,25 @@
             </select>
         </div>
 
+        <!-- கால அளவை நேரடியாக உள்ளிடும் பாக்ஸ்கள் (Years, Months, Days Inputs) -->
         <div class="form-group">
-            <label id="lblStartDate">தொடங்கிய தேதி:</label>
-            <input type="date" id="startDate" required>
+            <label id="lblKaalaAlavu">கால அளவு (நேரடியாக உள்ளிடவும்):</label>
+            <div class="input-row-3">
+                <input type="number" id="inputYears" placeholder="வருடம்" min="0" value="0" oninput="clearCalendarInputs()">
+                <input type="number" id="inputMonths" placeholder="மாதம்" min="0" max="11" value="0" oninput="clearCalendarInputs()">
+                <input type="number" id="inputDays" placeholder="நாள்" min="0" max="30" value="0" oninput="clearCalendarInputs()">
+            </div>
+        </div>
+
+        <!-- நாட்காட்டி தேர்வு (Calendar Datepicker Options) -->
+        <div class="form-group">
+            <label id="lblStartDate">அல்லது தேதியைத் தேர்ந்தெடுக்கவும்:</label>
+            <input type="date" id="startDate" onchange="clearDirectInputs()">
         </div>
 
         <div class="form-group">
             <label id="lblEndDate">முடிவுற்ற தேதி:</label>
-            <input type="date" id="endDate" required>
+            <input type="date" id="endDate" onchange="clearDirectInputs()">
         </div>
 
         <button type="submit" class="submit-btn" id="btnCalculate">வட்டியைக் கணக்கிடு</button>
@@ -316,7 +336,7 @@
             vagal: "வட்டி வகை:",
             calcMethod: "கணக்கீடு முறை:",
             vigitham: "வட்டி விகிதம்:",
-            start: "தொடங்கிய தேதி:",
+            start: "அல்லது தேதியைத் தேர்ந்தெடுக்கவும்:",
             end: "முடிவுற்ற தேதி:",
             btn: "வட்டியைக் கணக்கிடு",
             toggle: "Switch to English",
@@ -331,7 +351,8 @@
             optQuarterly: "மூன்று மாதமொருமுறை",
             optHalfYearly: "ஆறு மாதமொருமுறை",
             optAnnually: "ஆண்டிற்கு ஒருமுறை",
-            shareBtn: "WhatsApp பகிர்க"
+            shareBtn: "WhatsApp பகிர்க",
+            kaalaAlavu: "கால அளவு (நேரடியாக உள்ளிடவும்):"
         },
         en: {
             title: "Interest Calculator",
@@ -339,7 +360,7 @@
             vagal: "Interest Type:",
             calcMethod: "Calculation Mode:",
             vigitham: "Interest Rate:",
-            start: "Start Date:",
+            start: "Or Select Dates Below:",
             end: "End Date:",
             btn: "Calculate Interest",
             toggle: "தமிழில் மாற்றவும்",
@@ -354,7 +375,8 @@
             optQuarterly: "Quarterly",
             optHalfYearly: "Half-Yearly",
             optAnnually: "Annually",
-            shareBtn: "Share on WhatsApp"
+            shareBtn: "Share on WhatsApp",
+            kaalaAlavu: "Duration (Enter Directly):"
         }
     };
 
@@ -362,7 +384,7 @@
         return parseFloat(str.replace(/,/g, '')) || 0;
     }
 
-    // FIXED SYNTAX: Array indices [0] and [1] are explicitly added to fix deployment and format crashes
+    // FIXED: எண்கள் இரட்டிப்பாகத் தோன்றும் பிழை [parts0, parts1] துல்லியமாக நீக்கப்பட்டுள்ளது
     function formatIndianCurrency(amount) {
         if (isNaN(amount)) return "0.00";
         let parts = amount.toFixed(2).split('.');
@@ -389,12 +411,25 @@
     function handleAsalInput(inputElement) {
         let cursorPosition = inputElement.selectionStart;
         let originalLength = inputElement.value.length;
-        
         inputElement.value = formatAsalInput(inputElement.value);
-        
         let newLength = inputElement.value.length;
         cursorPosition = cursorPosition + (newLength - originalLength);
         inputElement.setSelectionRange(cursorPosition, cursorPosition);
+    }
+
+    // நாட்காட்டியைத் தேர்ந்தெடுத்தால் நேரடி பாக்ஸ் மதிப்புகளை 0 ஆக்கும் செயல்பாடு
+    function clearDirectInputs() {
+        if(document.getElementById('startDate').value || document.getElementById('endDate').value) {
+            document.getElementById('inputYears').value = 0;
+            document.getElementById('inputMonths').value = 0;
+            document.getElementById('inputDays').value = 0;
+        }
+    }
+
+    // நேரடி பாக்ஸில் டைப் செய்தால் நாட்காட்டித் தேர்வை நீக்கும் செயல்பாடு
+    function clearCalendarInputs() {
+        document.getElementById('startDate').value = "";
+        document.getElementById('endDate').value = "";
     }
 
     function adaptPlaceholder() {
@@ -440,10 +475,10 @@
         document.getElementById('optHalfYearly').innerText = t.optHalfYearly;
         document.getElementById('optAnnually').innerText = t.optAnnually;
         document.getElementById('txtShareBtn').innerText = t.shareBtn;
+        document.getElementById('lblKaalaAlavu').innerText = t.kaalaAlavu;
         
         document.getElementById('resultDisplay').classList.remove('active');
         document.getElementById('buttonsBar').classList.remove('active');
-        
         adaptPlaceholder();
     }
     function runCalculation(event) {
@@ -452,33 +487,43 @@
         const principal = parseRawNumber(document.getElementById('asal').value);
         const rate = parseFloat(document.getElementById('vattiRate').value);
         const type = document.getElementById('vattiVagai').value;
+        
+        let years = parseInt(document.getElementById('inputYears').value, 10) || 0;
+        let months = parseInt(document.getElementById('inputMonths').value, 10) || 0;
+        let days = parseInt(document.getElementById('inputDays').value, 10) || 0;
+
         const startStr = document.getElementById('startDate').value;
         const endStr = document.getElementById('endDate').value;
 
-        if (!startStr || !endStr || principal <= 0 || isNaN(rate)) return;
+        // நேரடி பாக்ஸ்கள் 0 ஆக இருந்து, தேதிகள் தேர்ந்தெடுக்கப்பட்டிருந்தால் கால அளவைக் கணக்கிடும்
+        if (startStr && endStr && years === 0 && months === 0 && days === 0) {
+            const start = new Date(startStr);
+            const end = new Date(endStr);
+            if (end < start) {
+                alert(currentLang === 'ta' ? "முடிவுற்ற தேதி தொடங்கிய தேதியை விட அதிகமாக இருக்க வேண்டும்!" : "End date must be after Start date!");
+                return;
+            }
+            years = end.getFullYear() - start.getFullYear();
+            months = end.getMonth() - start.getMonth();
+            days = end.getDate() - start.getDate();
 
-        const start = new Date(startStr);
-        const end = new Date(endStr);
-        
-        if (end < start) {
-            alert(currentLang === 'ta' ? "முடிவுற்ற தேதி தொடங்கிய தேதியை விட அதிகமாக இருக்க வேண்டும்!" : "End date must be after Start date!");
+            if (days < 0) {
+                months -= 1;
+                const prevMonthMax = new Date(end.getFullYear(), end.getMonth(), 0).getDate();
+                days += prevMonthMax;
+            }
+            if (months < 0) {
+                years -= 1;
+                months += 12;
+            }
+        }
+
+        if (principal <= 0 || isNaN(rate) || (years === 0 && months === 0 && days === 0)) {
+            alert(currentLang === 'ta' ? "விவரங்களைச் சரியாக உள்ளிடவும்!" : "Please enter the duration details correctly!");
             return;
         }
 
-        let years = end.getFullYear() - start.getFullYear();
-        let months = end.getMonth() - start.getMonth();
-        let days = end.getDate() - start.getDate();
-
-        if (days < 0) {
-            months -= 1;
-            const prevMonthMax = new Date(end.getFullYear(), end.getMonth(), 0).getDate();
-            days += prevMonthMax;
-        }
-        if (months < 0) {
-            years -= 1;
-            months += 12;
-        }
-
+        // வட்டி வகைக்கு ஏற்ப (ரூபாய் வட்டிக்கு 30 நாள் கணக்கு, பேங்க் வட்டிக்கு காலண்டர் கணக்கு) மாறும் அல்காரிதம்
         let totalMonths = 0;
         let totalYears = 0;
 
@@ -486,21 +531,16 @@
             totalMonths = (years * 12) + months + (days / 30);
             totalYears = totalMonths / 12;
         } else {
-            const totalDaysDelta = Math.floor((end - start) / (1000 * 60 * 60 * 24));
-            totalMonths = totalDaysDelta / 30.4375; 
-            totalYears = totalDaysDelta / 365.25;   
+            const exactTotalDays = Math.round((years * 365.25) + (months * 30.4375) + days);
+            totalMonths = exactTotalDays / 30.4375;
+            totalYears = exactTotalDays / 365.25;
         }
 
         let monthlyRateConverted = (type === 'rupee') ? rate : (rate / 12);
         let interest = 0;
         let totalAmount = 0;
         
-        let modeLabelText = "";
-        if (currentLang === 'ta') {
-            modeLabelText = (currentMode === 'thani') ? "தனி வட்டி" : "கூட்டு வட்டி";
-        } else {
-            modeLabelText = (currentMode === 'thani') ? "Simple Interest" : "Compound Interest";
-        }
+        let modeLabelText = currentLang === 'ta' ? ((currentMode === 'thani') ? "தனி வட்டி" : "கூட்டு வட்டி") : ((currentMode === 'thani') ? "Simple Interest" : "Compound Interest");
 
         if (currentMode === 'thani') {
             interest = (principal / 100) * monthlyRateConverted * totalMonths;
@@ -520,12 +560,9 @@
         display.innerHTML = "";
         display.classList.add('active');
 
-        let durationTextString = "";
-        if (currentLang === 'ta') {
-            durationTextString = years + " வருடம், " + months + " மாதம், " + days + " நாட்கள்";
-        } else {
-            durationTextString = years + " Year(s), " + months + " Month(s), " + days + " Day(s)";
-        }
+        let durationTextString = currentLang === 'ta' 
+            ? `${years} வருடம், ${months} மாதம், ${days} நாட்கள்`
+            : `${years} Year(s), ${months} Month(s), ${days} Day(s)`;
 
         const formattedPrincipal = formatIndianCurrency(principal);
         const formattedInterest = formatIndianCurrency(interest);
@@ -551,30 +588,24 @@
             `<div class="result-line"><span>${labels.interest}</span><span class="result-value highlight">₹${formattedInterest}</span></div>` +
             `<div class="result-line"><span>${labels.total}</span><span class="result-value highlight">₹${formattedTotal}</span></div>`;
 
+        // FIXED FOR MOBILE:about:blank பிழை வராதவாறு நேரடியாக வாட்ஸ்அப் செயலிக்கு அனுப்பும் குறியீடு
         finalWhatsAppMessageText = outMessageText;
         document.getElementById('buttonsBar').classList.add('active');
     }
 
-    // FIXED DEEP LINK PROTOCOL: Forces window execution layer onto phone app context without tabs
     function shareDirectToWhatsApp() {
         if (!finalWhatsAppMessageText) return;
-        
         const nativeProtocolUrl = "whatsapp://send?text=" + encodeURIComponent(finalWhatsAppMessageText);
         const webFallbackUrl = "https://whatsapp.com" + encodeURIComponent(finalWhatsAppMessageText);
         
         window.location.href = nativeProtocolUrl;
-        
-        setTimeout(() => {
-            window.location.href = webFallbackUrl;
-        }, 500);
+        setTimeout(() => { window.location.href = webFallbackUrl; }, 500);
     }
 
     function copyDataTextToClipboard() {
         if (!clipboardTextRaw) return;
         navigator.clipboard.writeText(clipboardTextRaw).then(() => {
             alert(currentLang === 'ta' ? "விவரங்கள் நகலெடுக்கப்பட்டது!" : "Details copied to clipboard!");
-        }).catch(err => {
-            console.error("Error backing up text buffer: ", err);
         });
     }
 
