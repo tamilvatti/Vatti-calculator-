@@ -552,11 +552,13 @@
         if (type === 'rupee') {
             totalMonths = (years * 12) + months + (days / 30);
             totalYears = totalMonths / 12;
-        } else {
-            const exactTotalDays = Math.round((years * 365.25) + (months * 30.4375) + days);
-            totalMonths = exactTotalDays / 30.4375;
-            totalYears = exactTotalDays / 365.25;
+        }         else {
+            // Fixes the bank calculation mismatch by using flat unit ratios
+            totalYears = years + (months / 12) + (days / 365);
+            totalMonths = totalYears * 12;
         }
+
+        
 
         let monthlyRateConverted = (type === 'rupee') ? rate : (rate / 12);
         let interest = 0;
