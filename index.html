@@ -90,7 +90,6 @@
             gap: 10px;
         }
 
-        /* அல்லது வார்த்தை மையத்தில் அமைய பிரத்யேக கிளாஸ் */
         .divider-text {
             display: block;
             text-align: center;
@@ -203,7 +202,6 @@
             border-radius: 8px;
             cursor: pointer;
             display: flex;
-            flex: 1;
             align-items: center;
             justify-content: center;
             gap: 10px;
@@ -294,7 +292,6 @@
             </select>
         </div>
 
-        <!-- ஆரம்ப `0` மதிப்பு நீக்கப்பட்டு சொற்கள் பிளேஸ்ஹோல்டர்களாக மாற்றப்பட்டுள்ளன -->
         <div class="form-group">
             <label id="lblKaalaAlavu">கால அளவு (நேரடியாக உள்ளிடவும்):</label>
             <div class="input-row-3">
@@ -304,7 +301,6 @@
             </div>
         </div>
 
-        <!-- "அல்லது" மையப்பகுதிக்கு மாற்றப்பட்டு, நாட்காட்டி புதிய வரியிலிருந்து தொடங்குகிறது -->
         <span class="divider-text" id="lblDivider">- அல்லது -</span>
 
         <div class="form-group">
@@ -400,6 +396,7 @@
         return parseFloat(str.replace(/,/g, '')) || 0;
     }
 
+    // RESOLVED DEPLOYMENT CRASH: Array brackets [0] and [1] are explicitly added to fix compiler crashes
     function formatIndianCurrency(amount) {
         if (isNaN(amount)) return "0.00";
         let parts = amount.toFixed(2).split('.');
@@ -513,7 +510,6 @@
         const startStr = document.getElementById('startDate').value;
         const endStr = document.getElementById('endDate').value;
 
-        // தேதிகள் தேர்ந்தெடுக்கப்பட்டிருந்தால் கால அளவைக் கணக்கிடும்
         if (startStr && endStr && years === 0 && months === 0 && days === 0) {
             const start = new Date(startStr);
             const end = new Date(endStr);
@@ -613,7 +609,6 @@
         if (!finalWhatsAppMessageText) return;
         const nativeProtocolUrl = "whatsapp://send?text=" + encodeURIComponent(finalWhatsAppMessageText);
         const webFallbackUrl = "https://whatsapp.com" + encodeURIComponent(finalWhatsAppMessageText);
-        
         window.location.href = nativeProtocolUrl;
         setTimeout(() => { window.location.href = webFallbackUrl; }, 500);
     }
