@@ -313,8 +313,8 @@
             <label id="lblKaalaAlavu">கால அளவு (நேரடியாக உள்ளிடவும்):</label>
             <div class="input-row-3">
                 <input type="number" id="inputYears" placeholder="வருடம்" min="0" oninput="clearCalendarInputs()">
-                <input type="number" id="inputMonths" placeholder="மாதம்" min="0"  oninput="clearCalendarInputs()">
-                <input type="number" id="inputDays" placeholder="நாள்" min="0" oninput="clearCalendarInputs()">
+                <input type="number" id="inputMonths" placeholder="மாதம்" min="0" max="11" oninput="clearCalendarInputs()">
+                <input type="number" id="inputDays" placeholder="நாள்" min="0" max="30" oninput="clearCalendarInputs()">
             </div>
         </div>
 
@@ -514,7 +514,7 @@
         document.getElementById('buttonsBar').classList.remove('active');
         adaptPlaceholder();
     }
-    function runCalculation(event) {
+     function runCalculation(event) {
         event.preventDefault();
         
         const principal = parseRawNumber(document.getElementById('asal').value);
@@ -588,119 +588,6 @@
                 totalAmount = principal * Math.pow((1 + ((rate / 100) / timesCompoundedPerYear)), (timesCompoundedPerYear * totalYears));
             }
             interest = totalAmount - principal;
-        }
-
-        const display = document.getElementById('resultDisplay');
-        display.innerHTML = "";
-        display.classList.add('active');
-
-        let durationTextString = currentLang === 'ta' 
-            ? `${years} வருடம், ${months} மாதம், ${days} நாட்கள்`
-            : `${years} Year(s), ${months} Month(s), ${days} Day(s)`;
-
-        const formattedPrincipal = formatIndianCurrency(principal);
-        const formattedInterest = formatIndianCurrency(interest);
-        const formattedTotal = formatIndianCurrency(totalAmount);
-
-        let outMessageText = "";
-        let labels = {};
-
-        if (currentLang === 'ta') {
-            labels = { method: "கணக்கீடு முறை", principal: "அசல் தொகை", duration: "கால அளவு", interest: "வட்டித் தொகை", total: "மொத்தத் தொகை" };
-            outMessageText = `*வட்டி விபரங்கள் (${modeLabelText})*\n\n• அசல் தொகை: ₹${formattedPrincipal}\n• கால அளவு: ${durationTextString}\n• வட்டித் தொகை: ₹${formattedInterest}\n• மொத்தத் தொகை: ₹${formattedTotal}`;
-            clipboardTextRaw = `வட்டி விபரங்கள் (${modeLabelText})\nஅசல் தொகை: ₹${formattedPrincipal}\nகால அளவு: ${durationTextString}\nவட்டித் தொகை: ₹${formattedInterest}\nமொத்தத் தொகை: ₹${formattedTotal}`;
-        } else {
-            labels = { method: "Calculation Type", principal: "Principal Amount", duration: "Duration", interest: "Interest Amount", total: "Total Amount" };
-            outMessageText = `*Interest Details (${modeLabelText})*\n\n• Principal Amount: ₹${formattedPrincipal}\n• Duration: ${durationTextString}\n• Interest Amount: ₹${formattedInterest}\n• Total Amount: ₹${formattedTotal}`;
-            clipboardTextRaw = `Interest Details (${modeLabelText})\nPrincipal Amount: ₹${formattedPrincipal}\nDuration: ${durationTextString}\nInterest Amount: ₹${formattedInterest}\nTotal Amount: ₹${formattedTotal}`;
-        }
-
- function runCalculation(event) {
-        event.preventDefault();
-        
-        const principal = parseRawNumber(document.getElementById('asal').value);
-        const rate = parseFloat(document.getElementById('vattiRate').value);
-        const type = document.getElementById('vattiVagai').value;
-        
-        let years = parseInt(document.getElementById('inputYears').value, 10) || 0;
-        let months = parseInt(document.getElementById('inputMonths').value, 10) || 0;
-        let days = parseInt(document.getElementById('inputDays').value, 10) || 0;
-
-        const startStr = document.getElementById('startDate').value;
-        const endStr = document.getElementById('endDate').value;
-
-        // 1. If date picker is used, find the difference between dates
-        if (startStr && endStr && years === 0 && months === 0 && days === 0) {
-            const start = new Date(startStr);
-            const end = new Date(endStr);
-            if (end < start) {
-                alert(currentLang === 'ta' ? "முடிவுற்ற தேதி தொடங்கிய தேதியை விட அதிகமாக இருக்க வேண்டும்!" : "End date must be after Start date!");
-                return;
-            }
-            years = end.getFullYear() - start.getFullYear();
-            months = end.getMonth() - start.getMonth();
-            days = end.getDate() - start.getDate();
-
-            if (days < 0) {
-                months -= 1;
-                const prevMonthMax = new Date(end.getFullYear(), end.getMonth(), 0).getDate();
-                days += prevMonthMax;
-            }
-            if (months < 0) {
-                years -= 1;
-                months += 12;
-            }
-        } else {
-            // 2. THE FIX: If typed manually, automatically redistribute days over 30 and months over 12 into clear buckets
-            if (days >= 30) {
-                let extraMonths = Math.floor(days / 30);
-                months += extraMonths;
-                days = days % 30;
-            }
-            if (months >= 12) {
-                let extraYears = Math.floor(months / 12);
-                years += extraYears;
-                months = months % 12;
-            }
-        }
-
-        if (principal <= 0 || isNaN(rate) || (years === 0 && months === 0 && days === 0)) {
-            alert(currentLang === 'ta' ? "விவரங்களைச் சரியாக உள்ளிடவும்!" : "Please enter the duration details correctly!");
-            return;
-        }
-
-        let totalMonths = 0;
-        let totalYears = 0;
-
-        if (type === 'rupee') {
-            totalMonths = (years * 12) + months + (days / 30);
-            totalYears = totalMonths / 12;
-        }      
-        else {
-            // Fixes the bank calculation mismatch by using flat unit ratios
-            totalYears = years + (months / 12) + (days / 365);
-            totalMonths = totalYears * 12;
-        }
-
-        let monthlyRateConverted = (type === 'rupee') ? rate : (rate / 12);
-        let interest = 0;
-        let totalAmount = 0;
-        
-        let modeLabelText = currentLang === 'ta' ? ((currentMode === 'thani') ? "தனி வட்டி" : "கூட்டு வட்டி") : ((currentMode === 'thani') ? "Simple Interest" : "Compound Interest");
-
-        if (currentMode === 'thani') {
-            interest = (principal / 100) * monthlyRateConverted * totalMonths;
-            totalAmount = principal + interest;
-        } else {
-            const timesCompoundedPerYear = parseInt(document.getElementById('compoundFreq').value, 10);
-            if (type === 'rupee') {
-                const annualEquivalentPercentage = (rate * 12); 
-                totalAmount = principal * Math.pow((1 + (annualEquivalentPercentage / (100 * timesCompoundedPerYear))), (totalYears * timesCompoundedPerYear));
-            } else {
-                totalAmount = principal * Math.pow((1 + ((rate / 100) / timesCompoundedPerYear)), (timesCompoundedPerYear * totalYears));
-            }
-            interest = totalAmount - principal;
-
         }
 
         const display = document.getElementById('resultDisplay');
@@ -760,3 +647,4 @@
 </script>
 </body>
 </html>
+
