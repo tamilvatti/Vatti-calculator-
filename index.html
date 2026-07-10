@@ -646,6 +646,63 @@
     document.addEventListener('DOMContentLoaded', function() {
         adaptPlaceholder();
     });
+
+<!-- PASTE STARTING FROM HERE -->
+
+// --- Legal Modals Script Logic ---
+window.openModal = function(id) {
+    let modal = document.getElementById(id);
+    if(modal) modal.style.display = 'flex';
+}
+window.closeModal = function(id) {
+    let modal = document.getElementById(id);
+    if(modal) modal.style.display = 'none';
+}
+
+<!-- END OF SCRIPT EXTRA SPACE -->
+</script>
+
+<!-- Clean HTML Footer Elements -->
+<footer style="text-align: center; margin-top: 50px; padding: 20px; font-family: sans-serif; border-top: 1px solid #e5e7eb; font-size: 14px; color: #4b5563; clear: both;">
+    <p>© 2026 Vatti Calculator. All rights reserved.</p>
+    <p>
+        <a href="javascript:void(0)" onclick="openModal('privacyModal')" style="color: #2563eb; text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
+        <a href="javascript:void(0)" onclick="openModal('termsModal')" style="color: #2563eb; text-decoration: none; margin: 0 10px;">Terms & Disclaimer</a> | 
+        <a href="javascript:void(0)" onclick="openModal('contactModal')" style="color: #2563eb; text-decoration: none; margin: 0 10px;">Contact Us</a>
+    </p>
+</footer>
+
+<!-- Privacy Policy Popup Window -->
+<div id="privacyModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:99999; justify-content:center; align-items:center;">
+    <div style="background:white; padding:25px; border-radius:8px; max-width:500px; width:90%; font-family:sans-serif; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <h2 style="margin-top:0; color:#1e3a8a; font-size: 20px;">Privacy Policy (அந்தரங்கக் கொள்கை)</h2>
+        <p style="color:#374151; line-height:1.5; font-size: 14px;">This website uses standard browser cookies to optimize performance and display relevant advertisements via third-party networks like Google AdSense. We respect your privacy: none of the financial data, numbers, or calculations you input into this calculator are tracked, collected, or stored on our servers.</p>
+        <button onclick="closeModal('privacyModal')" style="background:#2563eb; color:white; border:none; padding:10px 16px; border-radius:4px; cursor:pointer; margin-top:15px; width:100%; font-weight: bold;">Close / மூடு</button>
+    </div>
+</div>
+
+<!-- Terms & Disclaimer Popup Window -->
+<div id="termsModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:99999; justify-content:center; align-items:center;">
+    <div style="background:white; padding:25px; border-radius:8px; max-width:500px; width:90%; font-family:sans-serif; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <h2 style="margin-top:0; color:#1e3a8a; font-size: 20px;">Terms & Disclaimer (நிபந்தனைகள்)</h2>
+        <p style="color:#374151; line-height:1.5; font-size: 14px;">The calculations provided by this tool are for educational and general informational purposes only. While we aim for mathematical accuracy, we are not legally responsible for any financial losses, formatting errors, or personal/business disputes that may arise between lenders and borrowers utilizing this website. Please cross-verify your calculations manually before making final payments.</p>
+        <button onclick="closeModal('termsModal')" style="background:#2563eb; color:white; border:none; padding:10px 16px; border-radius:4px; cursor:pointer; margin-top:15px; width:100%; font-weight: bold;">Close / மூடு</button>
+    </div>
+</div>
+
+<!-- Contact Us Popup Window -->
+<div id="contactModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:99999; justify-content:center; align-items:center;">
+    <div style="background:white; padding:25px; border-radius:8px; max-width:500px; width:90%; font-family:sans-serif; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <h2 style="margin-top:0; color:#1e3a8a; font-size: 20px;">Contact Us (தொடர்புக்கு)</h2>
+        <p style="color:#374151; line-height:1.5; font-size: 14px;">Thank you for using our Vatti Calculator. If you notice a mathematical bug, have feature feedback, or want to report an issue, please reach out to the developer directly via email:</p>
+        <p style="font-weight:bold; color:#2563eb; text-align:center; font-size:16px; margin: 15px 0;">nidhya.mannoj@gmail.com</p>
+        <button onclick="closeModal('contactModal')" style="background:#2563eb; color:white; border:none; padding:10px 16px; border-radius:4px; cursor:pointer; margin-top:5px; width:100%; font-weight: bold;">Close / மூடு</button>
+    </div>
+</div>
+
+<!-- STOP PASTING HERE. LEAVE YOUR ORIGINAL </BODY> AND </HTML> TAGS UNTOUCHED BELOW THIS -->
+
+    
 </script>
 </body>
 </html>
